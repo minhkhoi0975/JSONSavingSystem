@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace SavingSystem
 {
-    public class Serializer
+    public class Serializer : ISerializer
     {
         public JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
 
@@ -16,17 +16,21 @@ namespace SavingSystem
             serializerSettings.Converters.Add(new ColorConverter());
         }
 
-        /// <summary> Serialize data into a form that can be stored in a file. /// </summary>
         public object Serialize(object data)
         {
             string jsonObject = JsonConvert.SerializeObject(data, Formatting.Indented, serializerSettings);
             return jsonObject;
         }
 
-        /// <summary> Deserialize data into a form that can be used by the game./// </summary>
         public T Deserialize<T>(object serializedData)
         {
             return JsonConvert.DeserializeObject<T>(serializedData.ToString());
+        }
+
+        /// <summary> Adds a custom converter for the serializer. </summary>
+        public void AddConverter(JsonConverter converter)
+        {
+            serializerSettings.Converters.Add(converter);
         }
     }
 }

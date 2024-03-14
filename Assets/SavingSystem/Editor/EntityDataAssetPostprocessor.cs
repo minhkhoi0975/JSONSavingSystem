@@ -17,11 +17,11 @@ namespace SavingSystem
             {
                 // Check if the asset is entity data.
                 ScriptableObject scriptableObject = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
-                if (!scriptableObject || scriptableObject is not IEntityDataSo entityDataScriptableObject)
+                if (scriptableObject is not EntityScriptableObject entityScriptableObject)
                     continue;
 
                 // Generate ID for the created entity data.
-                entityDataScriptableObject.GetEntityData().GenerateGuid();
+                entityScriptableObject.GetEntity().GenerateGuid();
                 EditorUtility.SetDirty(scriptableObject);
             }
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SavingSystem
 {
     [System.Serializable]
-    public class EntityData
+    public class Entity
     {
         [SerializeField]
         [DisplayOnlyInInspector]

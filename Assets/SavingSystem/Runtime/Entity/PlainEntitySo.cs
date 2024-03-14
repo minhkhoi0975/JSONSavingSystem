@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SavingSystem
 {
     [CreateAssetMenu(fileName = "New Entity Data", menuName = "Entity/Entity")]
-    public class PlainEntitySo : EntityDataSo<EntityData>
+    public class PlainEntitySo : EntityScriptableObject<Entity>
     {
         
     }

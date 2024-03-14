@@ -7,6 +7,7 @@ namespace SavingSystem
     public class EntityData
     {
         [SerializeField]
+        [DisplayOnlyInInspector]
         private string guid;
         public string Guid => guid;
 

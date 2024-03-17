@@ -124,5 +124,24 @@ namespace SavingSystem.Test
             Assert.AreEqual(quaternionSaveDataEntry2.type, quaternionSaveDataEntry.type);
             Assert.AreEqual(quaternionSaveDataEntry2.value, quaternionSaveDataEntry.value);
         }
+
+        [Test]
+        public void TestSerializingDataEntryColor()
+        {
+            SaveDataEntry colorSaveDataEntry = new SaveDataEntry();
+            colorSaveDataEntry.name = "SampleColorEntry";
+            colorSaveDataEntry.SetValue(new Color(9.0f, 16.0f, 20.0f, 20.0f));
+
+            Serializer serializer = new Serializer();
+            string jsonObject = (string)serializer.Serialize(colorSaveDataEntry);
+            Assert.AreNotEqual(jsonObject, null);
+
+            SaveDataEntry colorSaveDataEntry2 = serializer.Deserialize<SaveDataEntry>(jsonObject);
+            Assert.AreNotEqual(colorSaveDataEntry2, null);
+
+            Assert.AreEqual(colorSaveDataEntry2.name, colorSaveDataEntry.name);
+            Assert.AreEqual(colorSaveDataEntry2.type, colorSaveDataEntry.type);
+            Assert.AreEqual(colorSaveDataEntry2.value, colorSaveDataEntry.value);
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace SavingSystem.Test
     public class TestSerializingDataSaveData
     {
         [Test]
-        public void TestSerializingDataEntryBool()
+        public void TestSerializingSaveData()
         {
             SaveData saveData = new SaveData();
             saveData.SetValue("Name", "Roberts");

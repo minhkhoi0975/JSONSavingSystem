@@ -9,10 +9,10 @@ using JetBrains.Annotations;
 
 namespace SavingSystem.Test
 {
-    public class TestSerializingDataSaveData
+    public class TestSerializingSaveData
     {
         [Test]
-        public void TestSerializingSaveData()
+        public void TestSerializingSaveData1()
         {
             SaveData saveData = new SaveData();
             saveData.SetValue("Name", "Roberts");
@@ -43,6 +43,24 @@ namespace SavingSystem.Test
             Ultra = 3,
         }
 
+        public struct KeyBinding
+        {
+            public char moveForward;
+            public char moveBackward;
+            public char moveLeft;
+            public char moveRight;
+            public char jump;
+            public char crouch;
+
+            public char interact;
+            public char primaryAction;
+            public char secondaryAction;
+
+            public char weapon1;
+            public char weapon2;
+            public char weapon3;
+        }
+
         [Test]
         public void TestSerializingSaveData2()
         {
@@ -66,6 +84,21 @@ namespace SavingSystem.Test
 
             gameSettings.SetValue("Mouse Sensitivity", 23.0f);
             gameSettings.SetValue("Invert Mouse Y", false);
+            gameSettings.SetValue("Key Binding", new KeyBinding
+            {
+                moveForward = 'W',
+                moveBackward = 'S',
+                moveLeft = 'A',
+                moveRight = 'D',
+                jump = ' ',
+                crouch = 'C',
+                interact = 'E',
+                primaryAction = 'L',
+                secondaryAction = 'R',
+                weapon1 = '1',
+                weapon2 = '2',
+                weapon3 = '3'
+            });
 
             Serializer serializer = new Serializer();
             string jsonObject = (string)serializer.Serialize(gameSettings);
@@ -75,9 +108,7 @@ namespace SavingSystem.Test
             Assert.AreNotEqual(gameSettings2, null);
 
             foreach (var gameSetting in gameSettings.saveDataEntries)
-            {
                 Assert.AreEqual(gameSetting.Value.value, gameSettings2.saveDataEntries[gameSetting.Key].value);
-            }
         }
     }
 }

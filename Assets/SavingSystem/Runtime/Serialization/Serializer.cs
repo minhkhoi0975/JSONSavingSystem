@@ -14,6 +14,8 @@ namespace SavingSystem
             serializerSettings.Converters.Add(new Vector3IntConverter());
             serializerSettings.Converters.Add(new QuaternionConverter());
             serializerSettings.Converters.Add(new ColorConverter());
+
+            serializerSettings.Converters.Add(new SaveDataEntryConverter());
         }
 
         public object Serialize(object data)
@@ -24,7 +26,7 @@ namespace SavingSystem
 
         public T Deserialize<T>(object serializedData)
         {
-            return JsonConvert.DeserializeObject<T>(serializedData.ToString());
+            return JsonConvert.DeserializeObject<T>(serializedData.ToString(), serializerSettings);
         }
 
         /// <summary> Adds a custom converter for the serializer. </summary>

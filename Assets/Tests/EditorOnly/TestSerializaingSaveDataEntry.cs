@@ -143,5 +143,45 @@ namespace SavingSystem.Test
             Assert.AreEqual(colorSaveDataEntry2.type, colorSaveDataEntry.type);
             Assert.AreEqual(colorSaveDataEntry2.value, colorSaveDataEntry.value);
         }
+
+        public enum CharacterClass
+        {
+            Warrior = 0,
+            Mage = 1,
+            Rogue = 2
+        }
+
+        public struct Character
+        {
+            public string name;
+            public bool isFemale;
+            public CharacterClass characterClass;
+            public float health;
+        }
+
+        [Test]
+        public void TestSerializingDataEntryCustomStruct()
+        {
+            Character character = new Character();
+            character.name = "Sofia Marrison";
+            character.isFemale = true;
+            character.characterClass = CharacterClass.Mage;
+            character.health = 100.0f;
+
+            SaveDataEntry characterSaveDataEntry = new SaveDataEntry();
+            characterSaveDataEntry.name = "SampleColorEntry";
+            characterSaveDataEntry.SetValue(character);
+
+            Serializer serializer = new Serializer();
+            string jsonObject = (string)serializer.Serialize(characterSaveDataEntry);
+            Assert.AreNotEqual(jsonObject, null);
+
+            SaveDataEntry characterSaveDataEntry2 = serializer.Deserialize<SaveDataEntry>(jsonObject);
+            Assert.AreNotEqual(characterSaveDataEntry2, null);
+
+            Assert.AreEqual(characterSaveDataEntry2.name, characterSaveDataEntry.name);
+            Assert.AreEqual(characterSaveDataEntry2.type, characterSaveDataEntry.type);
+            Assert.AreEqual(characterSaveDataEntry2.value, characterSaveDataEntry.value);
+        }
     }
 }

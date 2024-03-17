@@ -157,6 +157,7 @@ namespace SavingSystem.Test
             public bool isFemale;
             public CharacterClass characterClass;
             public float health;
+            public List<string> guilds;
         }
 
         [Test]
@@ -167,6 +168,7 @@ namespace SavingSystem.Test
             character.isFemale = true;
             character.characterClass = CharacterClass.Mage;
             character.health = 100.0f;
+            character.guilds = new List<string>() {"Guardian of the Holy Temple", "Friend of Mage Society"};
 
             SaveDataEntry characterSaveDataEntry = new SaveDataEntry();
             characterSaveDataEntry.name = "SampleColorEntry";
@@ -181,7 +183,13 @@ namespace SavingSystem.Test
 
             Assert.AreEqual(characterSaveDataEntry2.name, characterSaveDataEntry.name);
             Assert.AreEqual(characterSaveDataEntry2.type, characterSaveDataEntry.type);
-            Assert.AreEqual(characterSaveDataEntry2.value, characterSaveDataEntry.value);
+
+            Character character2 = (Character)characterSaveDataEntry2.value;
+            Assert.AreEqual(character2.name, character.name);
+            Assert.AreEqual(character2.isFemale, character.isFemale);
+            Assert.AreEqual(character2.characterClass, character.characterClass);
+            Assert.AreEqual(character2.health, character.health);
+            Assert.AreEqual(character2.guilds, character.guilds);
         }
     }
 }

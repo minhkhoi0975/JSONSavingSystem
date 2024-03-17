@@ -9,6 +9,11 @@ namespace SavingSystem
         public Type type;
         public object value;
 
+        public T GetValue<T>()
+        {
+            return (T)value;
+        }
+
         public void SetValue<T>(T value)
         {
             this.value = value;

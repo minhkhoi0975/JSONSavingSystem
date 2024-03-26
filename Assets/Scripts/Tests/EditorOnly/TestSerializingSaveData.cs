@@ -6,6 +6,7 @@ using UnityEngine.TestTools;
 using SavingSystem;
 using System.Linq;
 using JetBrains.Annotations;
+using System.Drawing.Printing;
 
 namespace SavingSystem.Test
 {
@@ -20,6 +21,23 @@ namespace SavingSystem.Test
             saveData.SetValue("IsFemale", false);
             saveData.SetValue("CurrentHealth", 60.0f);
             saveData.SetValue("Personality", new string[] { "kind", "noble", "generous" });
+
+            HashSet<string> factions = new HashSet<string>
+            {
+                "Kingdom of Sardinia",
+                "Kingdom of Sardinia",
+                "Black Cloak Knight",
+                "Lion Military Order"
+            };
+            saveData.SetValue("Factions", factions);
+
+            Dictionary<string, float> relations = new Dictionary<string, float>
+            {
+                { "Kingdom of Kovarlasca", 100.0f },
+                { "Red Eagle Cult", -30.0f },
+                { "Demons of Nubrus Dungeon.", -100.0f }
+            };
+            saveData.SetValue("Relations", relations);
 
             Serializer serializer = new Serializer();
             string jsonObject = (string)serializer.Serialize(saveData);
@@ -109,6 +127,36 @@ namespace SavingSystem.Test
 
             foreach (var gameSetting in gameSettings.saveDataEntries)
                 Assert.AreEqual(gameSetting.Value.value, gameSettings2.saveDataEntries[gameSetting.Key].value);
+        }
+
+        [System.Serializable]
+        class DerivedSaveData : SaveData
+        {
+            float playTime = 20.0f;
+
+            public DerivedSaveData() 
+            {
+                SetValue("Difficulty", "Normal");
+                SetValue("Platform", "PC");
+                SetValue("Screen Resolution", new Vector2Int(1920, 1080));
+            }
+        }
+
+        [Test]
+        public void TestSerializingSaveData3()
+        {
+            DerivedSaveData derivedSaveData = new DerivedSaveData();
+            derivedSaveData.SetValue("Player Name", "Roberts");
+
+            Serializer serializer = new Serializer();
+            string jsonObject = (string)serializer.Serialize(derivedSaveData);
+            Assert.AreNotEqual(jsonObject, null);
+
+            DerivedSaveData derivedSaveData2 = serializer.Deserialize<DerivedSaveData>(jsonObject);
+            Assert.AreNotEqual(derivedSaveData2, null);
+
+            foreach (var gameSetting in derivedSaveData.saveDataEntries)
+                Assert.AreEqual(gameSetting.Value.value, derivedSaveData2.saveDataEntries[gameSetting.Key].value);
         }
     }
 }

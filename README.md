@@ -1,5 +1,6 @@
-# SavingSystem
+# JSONSavingSystem
 This is a simple saving system that uses JSON to serialize the deserialize data. It can be used for saving game states and game settings.
 
 How to install:
-Simply copy the SavingSystem folder to your project.
+1. Install the Newtonsoft Json package (Window->Package Manager->Add Package by Name->com.unity.nuget.newtonsoft-json).
+2. Copy the SavingSystem folder from this repo to your project.

@@ -26,4 +26,4 @@ You can have a look at the example script in Assets/Scripts/Samples to see how t
 
 * Create a new class that derives from PartialConverter.
 * Override the ReadValue() and WriteValue() methods.
-* After creating a Serializer object, use the AddConverter() to add the custom converter to the object.
+* After creating a Serializer object, use the AddConverter() method to add the custom converter to the object.

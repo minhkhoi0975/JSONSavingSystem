@@ -3,4 +3,4 @@ This is a simple saving system that uses JSON to serialize the deserialize data.
 
 How to install:
 1. Install the Newtonsoft Json package (Window->Package Manager->Add Package by Name->com.unity.nuget.newtonsoft-json).
-2. Copy the SavingSystem folder from this repo to your project.
+2. Copy the SavingSystem folder (Assets/Script/SavingSystem) from this repo to your project.

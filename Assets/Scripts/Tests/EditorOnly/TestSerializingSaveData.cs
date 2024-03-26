@@ -1,12 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
-using SavingSystem;
-using System.Linq;
-using JetBrains.Annotations;
-using System.Drawing.Printing;
 
 namespace SavingSystem.Test
 {
@@ -132,13 +126,26 @@ namespace SavingSystem.Test
         [System.Serializable]
         class DerivedSaveData : SaveData
         {
-            float playTime = 20.0f;
-
             public DerivedSaveData() 
             {
                 SetValue("Difficulty", "Normal");
                 SetValue("Platform", "PC");
                 SetValue("Screen Resolution", new Vector2Int(1920, 1080));
+
+                List<string> factions = new List<string>() 
+                {
+                    "Kingdom of Sardinia",
+                    "Kingdom of Sardinia",
+                    "Black Cloak Knight",
+                    "Lion Military Order"
+                };
+                SetValue("Factions", factions);
+
+                Queue<string> craftingQueue = new Queue<string>();
+                craftingQueue.Enqueue("Steel Sword");
+                craftingQueue.Enqueue("Hide Armor");
+                craftingQueue.Enqueue("Arrow");
+                SetValue("Crafting queue", craftingQueue);
             }
         }
 

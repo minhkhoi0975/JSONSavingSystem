@@ -1,11 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using SavingSystem;
-using System.Linq;
-using JetBrains.Annotations;
 
 namespace SavingSystem.Test
 {

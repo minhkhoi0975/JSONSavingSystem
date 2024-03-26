@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace SavingSystem
 {
+    /// <summary>
+    /// Used for storing data that can be serialized and saved to a file. <br/>
+    /// NOTE: You can derive this class to initialize entries in saveDataEntries, but variables in derived classes are NOT guaranteed be serialized.
+    /// </summary>
     [System.Serializable]
     public class SaveData
     {

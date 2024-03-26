@@ -22,7 +22,7 @@ You can have a look at the example script in Assets/Scripts/Samples to see how t
 * Create a Serializer object to serialize and deserialize data.
 * Use StreamWriter and StreamReader to save/load data to/from a file.
 
-## How to implement custom converters
+## How to Implement Custom Converters
 
 * Create a new class that derives from PartialConverter.
 * Override the ReadValue() and WriteValue() methods.

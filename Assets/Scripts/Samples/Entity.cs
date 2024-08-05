@@ -4,14 +4,6 @@ using SavingSystem;
 
 namespace SavingSystem.Test
 {
-    [Serializable]
-    public struct EntityData
-    {
-        public Vector3 position;
-        public Quaternion rotation;
-        public Vector3 scale;
-    }
-
     public class Entity : MonoBehaviour
     {
         [SerializeField] private string guid;
@@ -24,23 +16,22 @@ namespace SavingSystem.Test
 
         public void LoadData(SaveData saveData)
         {
-            EntityData entityData;
-            if (!saveData.TryGetValue<EntityData>($"entity_{guid}", out entityData))
+            if (!saveData.TryGetValue($"entity_{guid}", out SaveData entityData))
                 return;
 
-            transform.position = entityData.position;
-            transform.rotation = entityData.rotation;
-            transform.localScale = entityData.scale;
+            transform.position = entityData.GetValue<Vector3>("position");
+            transform.rotation = entityData.GetValue<Quaternion>("rotation");
+            transform.localScale = entityData.GetValue<Vector3>("scale");
         }
 
         public void SaveData(SaveData saveData)
         {
-            EntityData entityData = new EntityData();
-            entityData.position = transform.position;
-            entityData.rotation = transform.rotation;
-            entityData.scale = transform.localScale;
+            SaveData entityData = new SaveData();
+            entityData.SetValue("position", transform.position);
+            entityData.SetValue("rotation", transform.rotation);
+            entityData.SetValue("scale", transform.localScale);
 
-            saveData.SetValue<EntityData>($"entity_{guid}", entityData);
+            saveData.SetValue($"entity_{guid}", entityData);
         }
 
         private bool IsGuidValid()

@@ -176,6 +176,7 @@ namespace SavingSystem.Test
             SaveData childSaveData = new SaveData();
             childSaveData.SetValue<string>("weaponName", "AK-47");
             childSaveData.SetValue<int>("ammoCount", 25);
+            childSaveData.SetValue<Vector3>("muzzlePosition", new Vector3(0.0f, 0.0f, 3.0f));
 
             parentSaveData.SetValue<SaveData>("weaponData", childSaveData);
 

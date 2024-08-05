@@ -6,46 +6,48 @@ namespace SavingSystem
 {
     public class SaveDataConverter : PartialConverter<SaveData>
     {
-        private int entryCount;
+        //private int entryCount;
 
         protected override void ReadValue(ref SaveData value, string name, JsonReader reader, JsonSerializer serializer)
         {
-            switch (name)
+            JsonConverter[] converters = serializer.Converters.ToArray();
+
+            // Read the number of entries.
+            int entryCount = reader.ReadAsInt32() ?? 0;
+            reader.Read();
+
+            // Read the entries.
+            reader.Read();
+            for (int i = 0; i < entryCount; ++i)
             {
-                case "entryCount":
-                    entryCount = reader.ReadAsInt32() ?? 0;
-                    break;
+                SaveDataEntry saveDataEntry = new SaveDataEntry();
 
-                case "entries":
-                    reader.Read();
-                    for (int i = 0; i < entryCount; ++i)
-                    {
-                        SaveDataEntry saveDataEntry = new SaveDataEntry();
+                // Read entry's name.     
+                reader.Read();
+                saveDataEntry.name = reader.ReadAsString() ?? "";
 
-                        // Read entry's name.     
-                        reader.Read();
-                        saveDataEntry.name = reader.ReadAsString() ?? "";
+                // Read entry's type.
+                reader.Read();
+                string typeAsString = reader.ReadAsString();
+                saveDataEntry.type = Type.GetType(typeAsString);
 
-                        // Read entry's type.
-                        reader.Read();
-                        string typeAsString = reader.ReadAsString();
-                        saveDataEntry.type = Type.GetType(typeAsString);
+                // Read entry's value.
+                reader.Read();
+                string valueAsJsonObject = reader.ReadAsString().Trim();
+                if (typeof(SaveData).IsAssignableFrom(saveDataEntry.type)) // Handle nested save data.
+                    saveDataEntry.value = JsonConvert.DeserializeObject<SaveData>(valueAsJsonObject, converters);
+                else
+                    saveDataEntry.value = JsonConvert.DeserializeObject(valueAsJsonObject, saveDataEntry.type);
 
-                        // Read entry's value.
-                        reader.Read();
-                        string valueAsJsonObject = reader.ReadAsString().Trim();
-                        saveDataEntry.value = JsonConvert.DeserializeObject(valueAsJsonObject, saveDataEntry.type);
-
-                        value.saveDataEntries.Add(saveDataEntry.name, saveDataEntry);
-                    }
-                    reader.Read();
-
-                    break;
+                value.saveDataEntries.Add(saveDataEntry.name, saveDataEntry);
             }
+            reader.Read();
         }
 
         protected override void WriteJsonProperties(JsonWriter writer, SaveData value, JsonSerializer serializer)
         {
+            JsonConverter[] converters = serializer.Converters.ToArray();
+
             writer.WritePropertyName("entryCount");
             writer.WriteValue(value.saveDataEntries.Count);
 
@@ -60,8 +62,8 @@ namespace SavingSystem
                 writer.WriteValue(saveDataEntry.Value.type.AssemblyQualifiedName);
 
                 writer.WritePropertyName(nameof(saveDataEntry.Value.value));
-                string valueAsJsonObject = JsonConvert.SerializeObject(saveDataEntry.Value.value, Formatting.Indented, serializer.Converters.ToArray());
-                writer.WriteValue(valueAsJsonObject);
+                string valueAsJsonObject = JsonConvert.SerializeObject(saveDataEntry.Value.value, Formatting.Indented, converters);
+                writer.WriteValue(valueAsJsonObject); 
             }
             writer.WriteEndObject();
         }

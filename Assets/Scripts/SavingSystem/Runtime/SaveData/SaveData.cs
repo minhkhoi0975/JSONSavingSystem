@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SavingSystem
@@ -18,6 +19,7 @@ namespace SavingSystem
             if (!saveDataEntries.TryGetValue(entryName, out saveDataEntry)) 
             {
                 saveDataEntry = new SaveDataEntry();
+                saveDataEntry.name = entryName;
                 saveDataEntries[entryName] = saveDataEntry;
             }
 
@@ -28,6 +30,26 @@ namespace SavingSystem
         public T GetValue<T>(string entryName)
         {
             return saveDataEntries[entryName].GetValue<T>();
+        }
+
+        public bool TryGetValue<T>(string entryName, out T value) 
+        {
+            if (!saveDataEntries.TryGetValue(entryName, out SaveDataEntry saveDataEntry))
+            {
+                value = default(T);
+                return false;
+            }
+
+            // Check if the concrete type of the entry is compatible with type T.
+            Type concreteType = saveDataEntry.value.GetType();
+            if (!typeof(T).IsAssignableFrom(concreteType))
+            {
+                value = default(T);
+                return false;
+            }
+
+            value = saveDataEntry.GetValue<T>();
+            return true;
         }
     }
 }

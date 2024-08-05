@@ -16,6 +16,7 @@ namespace SavingSystem
             serializerSettings.Converters.Add(new ColorConverter());
 
             serializerSettings.Converters.Add(new SaveDataEntryConverter());
+            serializerSettings.Converters.Add(new SaveDataConverter());
         }
 
         public object Serialize(object data)

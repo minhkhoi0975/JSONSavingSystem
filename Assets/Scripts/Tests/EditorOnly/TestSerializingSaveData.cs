@@ -186,8 +186,18 @@ namespace SavingSystem.Test
             SaveData parentSaveData2 = serializer.Deserialize<SaveData>(jsonObject);
             Assert.AreNotEqual(parentSaveData2, null);
 
-            foreach (var saveDataEntry in parentSaveData.saveDataEntries)
-                Assert.AreEqual(saveDataEntry.Value.value, parentSaveData2.saveDataEntries[saveDataEntry.Key].value);
+            Assert.AreEqual(parentSaveData.GetValue<Vector3>("position"), parentSaveData2.GetValue<Vector3>("position"));
+            Assert.AreEqual(parentSaveData.GetValue<Quaternion>("rotation"), parentSaveData2.GetValue<Quaternion>("rotation"));
+
+            SaveData childSaveData2 = parentSaveData2.GetValue<SaveData>("weaponData");
+
+            string weaponName = childSaveData.GetValue<string>("weaponName");
+            string weaponName2 = childSaveData2.GetValue<string>("weaponName");
+            Assert.AreEqual(weaponName, weaponName2);
+
+            int ammoCount = childSaveData.GetValue<int>("ammoCount");
+            int ammoCount2 = childSaveData2.GetValue<int>("ammoCount");
+            Assert.AreEqual(ammoCount, ammoCount2);
         }
     }
 }

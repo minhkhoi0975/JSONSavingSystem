@@ -165,5 +165,29 @@ namespace SavingSystem.Test
             foreach (var gameSetting in derivedSaveData.saveDataEntries)
                 Assert.AreEqual(gameSetting.Value.value, derivedSaveData2.saveDataEntries[gameSetting.Key].value);
         }
+
+        [Test]
+        public void TestSerializingNestingSerializeData()
+        {
+            SaveData parentSaveData = new SaveData();
+            parentSaveData.SetValue<Vector3>("position", new Vector3(2.6f, 5.4f, 7.3f));
+            parentSaveData.SetValue<Quaternion>("rotation", new Quaternion(2.6f, 5.4f, 7.3f, 22.4f));
+
+            SaveData childSaveData = new SaveData();
+            childSaveData.SetValue<string>("weaponName", "AK-47");
+            childSaveData.SetValue<int>("ammoCount", 25);
+
+            parentSaveData.SetValue<SaveData>("weaponData", childSaveData);
+
+            Serializer serializer = new Serializer();
+            string jsonObject = (string)serializer.Serialize(parentSaveData);
+            Assert.AreNotEqual(jsonObject, null);
+
+            SaveData parentSaveData2 = serializer.Deserialize<SaveData>(jsonObject);
+            Assert.AreNotEqual(parentSaveData2, null);
+
+            foreach (var saveDataEntry in parentSaveData.saveDataEntries)
+                Assert.AreEqual(saveDataEntry.Value.value, parentSaveData2.saveDataEntries[saveDataEntry.Key].value);
+        }
     }
 }
